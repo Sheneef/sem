@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 
 public class App {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         // Create new Application
         App a = new App();
 
@@ -18,7 +17,10 @@ public class App {
         ArrayList<Employee> employees = a.getAllSalaries();
 
         // Test the size of the returned data - should be 240124
-        System.out.println(employees.size());
+        //System.out.println(employees.size());
+
+        //display results
+        a.printSalaries(employees);
 
         // Disconnect from database
         a.disconnect();
@@ -74,14 +76,32 @@ public class App {
             }
         }
     }
+
+    /**
+     * Prints a list of employees.
+     * @param employees The list of employees to print.
+     */
+    public void printSalaries(ArrayList<Employee> employees)
+    {
+        // Print header
+        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
+        // Loop over all employees in the list
+        for (Employee emp : employees)
+        {
+            String emp_string =
+                    String.format("%-10s %-15s %-20s %-8s",
+                            emp.emp_no, emp.first_name, emp.last_name, emp.salary);
+            System.out.println(emp_string);
+        }
+    }
+
     /**
      * Gets all the current employees and salaries.
+     *
      * @return A list of all employees and salaries, or null if there is an error.
      */
-    public ArrayList<Employee> getAllSalaries()
-    {
-        try
-        {
+    public ArrayList<Employee> getAllSalaries() {
+        try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
@@ -94,8 +114,7 @@ public class App {
             ResultSet rset = stmt.executeQuery(strSelect);
             // Extract employee information
             ArrayList<Employee> employees = new ArrayList<Employee>();
-            while (rset.next())
-            {
+            while (rset.next()) {
                 Employee emp = new Employee();
                 emp.emp_no = rset.getInt("employees.emp_no");
                 emp.first_name = rset.getString("employees.first_name");
@@ -104,26 +123,12 @@ public class App {
                 employees.add(emp);
             }
             return employees;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Failed to get salary details");
             return null;
         }
     }
-    public void displayEmployee(Employee emp)
-    {
-        if (emp != null)
-        {
-            System.out.println(
-                    emp.emp_no + " "
-                            + emp.first_name + " "
-                            + emp.last_name + "\n"
-                            + emp.title + "\n"
-                            + "Salary:" + emp.salary + "\n"
-                            + emp.dept_name + "\n"
-                            + "Manager: " + emp.manager + "\n");
-        }
-    }
+
+
 }
