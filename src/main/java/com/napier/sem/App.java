@@ -14,13 +14,14 @@ public class App {
         a.connect();
 
         // Extract employee salary information
-        ArrayList<Employee> employees = a.getAllSalaries();
+        ArrayList<Employee> employees = a.getSalariesbyrole();
 
         // Test the size of the returned data - should be 240124
         //System.out.println(employees.size());
 
-        //display results
+        //Display
         a.printSalaries(employees);
+
 
         // Disconnect from database
         a.disconnect();
@@ -77,39 +78,31 @@ public class App {
         }
     }
 
-    /**
-     * Prints a list of employees.
-     * @param employees The list of employees to print.
-     */
-    public void printSalaries(ArrayList<Employee> employees)
-    {
-        // Print header
-        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
-        // Loop over all employees in the list
-        for (Employee emp : employees)
-        {
-            String emp_string =
-                    String.format("%-10s %-15s %-20s %-8s",
-                            emp.emp_no, emp.first_name, emp.last_name, emp.salary);
-            System.out.println(emp_string);
-        }
-    }
+
+
 
     /**
      * Gets all the current employees and salaries.
      *
      * @return A list of all employees and salaries, or null if there is an error.
      */
-    public ArrayList<Employee> getAllSalaries() {
+    public ArrayList<Employee> getSalariesbyrole() {
         try {
             // Create an SQL statement
             Statement stmt = con.createStatement();
             // Create string for SQL statement
             String strSelect =
                     "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary "
-                            + "FROM employees, salaries "
-                            + "WHERE employees.emp_no = salaries.emp_no AND salaries.to_date = '9999-01-01' "
-                            + "ORDER BY employees.emp_no ASC";
+            +"FROM employees, salaries, titles "
+            +"WHERE employees.emp_no = salaries.emp_no "
+            +"AND employees.emp_no = titles.emp_no "
+            +"AND salaries.to_date = '9999-01-01' "
+            +"AND titles.to_date = '9999-01-01' "
+            +"AND titles.title = 'Engineer' "
+            +"ORDER BY employees.emp_no ASC limit 10" ;
+
+
+
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
             // Extract employee information
@@ -130,5 +123,23 @@ public class App {
         }
     }
 
+    /**
+     * Prints a list of employees.
+     * @param employees The list of employees to print.
+     */
+    public void printSalaries(ArrayList<Employee> employees)
+    {
+        // Print header
+        System.out.println(String.format("%-10s %-15s %-20s %-8s", "Emp No", "First Name", "Last Name", "Salary"));
+        // Loop over all employees in the list
+        for (Employee emp : employees)
+        {
+            String emp_string =
+                    String.format("%-10s %-15s %-20s %-8s",
+                            emp.emp_no, emp.first_name, emp.last_name, emp.salary);
+            System.out.println(emp_string);
+        }
+    }
 
 }
+
