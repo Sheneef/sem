@@ -2,6 +2,9 @@ package com.napier.sem;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+
 
 
 
@@ -10,6 +13,8 @@ public class App {
         // Create new Application
         App a = new App();
 
+
+
         // Connect to database
         a.connect();
 
@@ -17,7 +22,7 @@ public class App {
         ArrayList<Employee> employees = a.getSalariesbyrole();
 
         // Test the size of the returned data - should be 240124
-        //System.out.println(employees.size());
+        System.out.println(employees.size());
 
         //Display
         a.printSalaries(employees);
