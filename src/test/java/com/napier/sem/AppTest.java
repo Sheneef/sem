@@ -47,7 +47,26 @@ public class AppTest
     }
 
     @Test
-    void printSalariesByRole (){
+    void displayEployee()
+    {
+        app.displayEmployee(null);
+    }
+
+    @Test
+    void displayEmployeeTestEmpty() {
+        Employee emp = new Employee();
+        app.displayEmployee(emp);
+    }
+
+
+
+    @Test
+    void printSalariesbyRoleTestNull()
+    {
+        app.printSalariesByRole(null);
+    }
+    @Test
+    void printSalariesByRoleTestNull(){
         ArrayList<Employee> employees1 = new ArrayList<Employee>();
         employees1.add(null);
         app.printSalariesByRole(employees1);
@@ -55,19 +74,49 @@ public class AppTest
     }
 
     @Test
-    void printSalariesRole()
+    void printSalariesByRole()
     {
-        ArrayList<Employee> employees = new ArrayList<Employee>();
+        ArrayList<Employee> employees1 = new ArrayList<Employee>();
         Employee emp = new Employee();
         emp.emp_no = 1;
         emp.first_name = "Kevin";
         emp.last_name = "Chalmers";
-        emp.salary = 5000;
-        employees.add(emp);
-        app.printSalaries(employees);
+        emp.title = "Engineer";
+        emp.salary = 55000;
+        employees1.add(emp);
+        app.printSalariesByRole(employees1);
     }
 
 
+//Print Salaries by Department
+
+    @Test
+    void printSalariesByDepartmentTestnull()
+    {
+        app.printSalariesByDepartment(null);
+    }
+
+    @Test
+    void printSalariesByDepartmentTEST(){
+        ArrayList<Employee> employees3 = new ArrayList<Employee>();
+        employees3.add(null);
+        app.printSalariesByDepartment(employees3);
+
+    }
+
+    @Test
+    void printSalariesByDepartment()
+    {
+        ArrayList<Employee> employees3 = new ArrayList<Employee>();
+        Employee emp = new Employee();
+        emp.emp_no = 1;
+        emp.first_name = "Kevin";
+        emp.last_name = "Chalmers";
+        emp.title = "Engineer";
+        emp.salary = 55000;
+        employees3.add(emp);
+        app.printSalariesByDepartment(employees3);
+    }
 
 
 }
