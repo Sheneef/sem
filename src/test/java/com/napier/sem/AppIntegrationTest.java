@@ -28,4 +28,24 @@ public class AppIntegrationTest
         assertEquals(emp.first_name, "Ronghao");
         assertEquals(emp.last_name, "Garigliano");
     }
+
+    @Test
+    void testdisplayEmployee()
+    {
+        Employee emp = app.getEmployee(255530);
+        assertEquals(emp.emp_no, 255530);
+        assertEquals(emp.first_name, "Ronghao");
+        assertEquals(emp.last_name, "Garigliano");
+    }
+
+    @Test
+    void getAllSalaries()
+    {
+        Employee emp = app.getEmployee(255530);
+        assertEquals(emp.emp_no, 255530);
+        assertEquals(emp.first_name, "Ronghao");
+        assertEquals(emp.last_name, "Garigliano");
+    }
+
+
 }
