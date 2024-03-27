@@ -50,6 +50,8 @@ jobs:
           flags: Integration Tests # optional
           verbose: true # optional (default = false)
           slug: Shenee/sem
+
+
   build:
     name: Build and Start Using docker-compose
     runs-on: ubuntu-20.04
