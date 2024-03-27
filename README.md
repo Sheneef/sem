@@ -8,4 +8,6 @@ License  [![LICENSE](https://img.shields.io/github/license/sheneef/sem.svg?style
 
 Release [![Releases](https://img.shields.io/github/release/sheneef/sem/all.svg?style=flat-square)](https://github.com/sheneef/sem/releases)
 
+[![codecov](https://codecov.io/gh/Sheneef/sem/graph/badge.svg?token=NJPBVV3OV6)](https://codecov.io/gh/Sheneef/sem)
+
 
