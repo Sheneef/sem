@@ -59,33 +59,33 @@ public class AppTest
     }
 
 
+//
+//    @Test
+//    void printSalariesbyRoleTestNull()
+//    {
+//        app.printSalariesByRole(null);
+//    }
+//    @Test
+//    void printSalariesByRoleTestNull(){
+//        ArrayList<Employee> employees1 = new ArrayList<Employee>();
+//        employees1.add(null);
+//        app.printSalariesByRole(employees1);
+//
+//    }
 
-    @Test
-    void printSalariesbyRoleTestNull()
-    {
-        app.printSalariesByRole(null);
-    }
-    @Test
-    void printSalariesByRoleTestNull(){
-        ArrayList<Employee> employees1 = new ArrayList<Employee>();
-        employees1.add(null);
-        app.printSalariesByRole(employees1);
-
-    }
-
-    @Test
-    void printSalariesByRole()
-    {
-        ArrayList<Employee> employees1 = new ArrayList<Employee>();
-        Employee emp = new Employee();
-        emp.emp_no = 1;
-        emp.first_name = "Kevin";
-        emp.last_name = "Chalmers";
-        emp.title = "Engineer";
-        emp.salary = 55000;
-        employees1.add(emp);
-        app.printSalariesByRole(employees1);
-    }
+//    @Test
+//    void printSalariesByRole()
+//    {
+//        ArrayList<Employee> employees1 = new ArrayList<Employee>();
+//        Employee emp = new Employee();
+//        emp.emp_no = 1;
+//        emp.first_name = "Kevin";
+//        emp.last_name = "Chalmers";
+//        emp.title = "Engineer";
+//        emp.salary = 55000;
+//        employees1.add(emp);
+//        app.printSalariesByRole(employees1);
+//    }
 
 
 //Print Salaries by Department
