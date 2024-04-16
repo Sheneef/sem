@@ -53,18 +53,18 @@ public class AppIntegrationTest
         assertEquals(emp.last_name, "Garigliano");
     }
 //
-//    @Test
-//    void getAllSalaries()
-//    {
-//        ArrayList<Employee>employees = new ArrayList<Employee>()
-//        Employee emp = new Employee();
-//        employees.emp(emp);
-//        app.getEmployee(1001);
-//        assertEquals(emp.emp_no, 5000);
-//        assertEquals(emp.first_name, "Kevin");
-//        assertEquals(emp.last_name, "Chalmers");
-//        assertEquals(emp.salary, 55000);
-//    }
+    @Test
+    void getAllSalaries()
+    {
+        ArrayList<Employee>employees = new ArrayList<Employee>();
+        Employee emp = new Employee();
+        employees.emp(emp);
+        app.getEmployee(1001);
+        assertEquals(emp.emp_no, 5000);
+        assertEquals(emp.first_name, "Kevin");
+        assertEquals(emp.last_name, "Chalmers");
+        assertEquals(emp.salary, 55000);
+    }
 
 
     @Test
@@ -77,14 +77,13 @@ public class AppIntegrationTest
         assertEquals(emp.last_name, "Facello");
         app.getEmployee(1001);
     }
-
-//    @Test
-//    void testdisplayEmployee()
-//    {
-//        Employee emp = app.getEmployee(255530);
-//        assertEquals(emp.emp_no, 255530);
-//        assertEquals(emp.first_name, "Ronghao");
-//        assertEquals(emp.last_name, "Garigliano");
-//    }
+        @Test
+    void testdisplayEmployee()
+    {
+       Employee emp = app.getEmployee(255530);
+       assertEquals(emp.emp_no, 255530);
+       assertEquals(emp.first_name, "Ronghao");
+       assertEquals(emp.last_name, "Garigliano");
+   }
 
 }

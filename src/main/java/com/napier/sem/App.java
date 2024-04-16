@@ -1,69 +1,86 @@
 package com.napier.sem;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
 
 public class App {
     public static void main(String[] args) {
         // Create new Application and connect to database
-        App a = new App();
+        App app = new App();
 
         if (args.length < 1) {
-            a.connect("localhost:33060", 10000);
+            app.connect("localhost:33060", 0);
         } else {
-            a.connect(args[0], Integer.parseInt(args[1]));
+            app.connect(args[0], Integer.parseInt(args[1]));
         }
 
-        // Get Employee
-        Employee emp = a.getEmployee(255530);
-        // Display results
-        a.displayEmployee(emp);
+        ArrayList<Employee> employees = app.getAllSalaries2();
+        app.outputEmployees(employees, "Get All Employees.md");
 
+
+
+        // Get Employee
+        Employee emp = app.getEmployee(255530);
+        // Display results
+        app.displayEmployee(emp);
+//
         // Extract employee salary information
-        ArrayList<Employee> employees = a.getAllSalaries();
+        ArrayList<Employee> employees = app.getAllSalaries();
 
         // Test the size of the returned data - should be 240124
         //System.out.println(employees.size());
 
         //Display Results
-        a.printSalaries(employees);
+        app.printSalaries(employees);
 
         // Extract employee salary information
-        ArrayList<Employee> employees1 = a.getSalariesByRole("Engineer");
+        ArrayList<Employee> employees1 = app.getSalariesByRole("Engineer");
 
         //Display Results
-        a.printSalaries(employees1);
-
-
-
-        // Commenting these out to test
-
-//        //Extract Depart No information
-//        Department dept = a.getDepartment("Sales");
+        app.printSalaries(employees1);
 //
-//        //Display Depart No Information
-//        a.displayDepartmentNo(dept);
 //
-//        // Extract salary information in Specific Department
-//        ArrayList<Employee> employees3 = a.getSalariesByDepartment(dept);
 //
-//        //Display Salary Information in Specific department
-//        a.printSalariesByDepartment(employees3);
+//        // Commenting these out to test
+//
+        //Extract Depart No information
+        Department dept = app.getDepartment("Sales");
+
+        //Display Depart No Information
+        app.displayDepartmentNo(dept);
+
+        // Extract salary information in Specific Department
+        ArrayList<Employee> employees3 = app.getSalariesByDepartment(dept);
+
+        //Display Salary Information in Specific department
+        app.printSalariesByDepartment(employees3);
 
         // Disconnect from database
-        a.disconnect();
+        app.disconnect();
     }
 
     /**
      * Connection to MySQL database.
      */
-    private Connection con = null;
+    private static Connection con = null;
 
     /**
      * Connect to the MySQL database.
      */
-    public void connect(String location, int delay) {
+    public static void connect(String location, int delay) {
         try {
             // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -103,7 +120,7 @@ public class App {
     /**
      * Disconnect from the MySQL database.
      */
-    public void disconnect() {
+    public static  void disconnect() {
         if (con != null) {
             try {
                 // Close connection
@@ -157,16 +174,16 @@ public class App {
 //            // Create string for SQL statement
 //            String strSelect =
 //
-////                    "select e.emp_no, e.first_name, e.last_name, t.title, dt.dept_no, "
-////                            + "(select emp_no from dept_manager where dept_no = dt.dept_no and to_date='9999-01-01') as ManagerID,"
-////                            + "(select dept_name from departments where dept_no = dt.dept_no) as dept_name, "
-////                            + "(select salary from salaries where emp_no = "+ ID +" and to_date='9999-01-01') as salary,"
-////                            + "(Select concat(first_name, ' ' ,last_name) from employees where emp_no = ManagerID) as manager "
-////                            + "From employees as e "
-////                            + "inner join titles as t on e.emp_no = t.emp_no "
-////                            + "inner join dept_emp as dm on e.emp_no = dm.emp_no "
-////                            + "inner join departments as dt on dm.dept_no = dt.dept_no "
-////                            + "WHERE e.emp_no = " + ID;
+//                    "select e.emp_no, e.first_name, e.last_name, t.title, dt.dept_no, "
+//                            + "(select emp_no from dept_manager where dept_no = dt.dept_no and to_date='9999-01-01') as ManagerID,"
+//                            + "(select dept_name from departments where dept_no = dt.dept_no) as dept_name, "
+//                            + "(select salary from salaries where emp_no = "+ ID +" and to_date='9999-01-01') as salary,"
+//                            + "(Select concat(first_name, ' ' ,last_name) from employees where emp_no = ManagerID) as manager "
+//                            + "From employees as e "
+//                            + "inner join titles as t on e.emp_no = t.emp_no "
+//                            + "inner join dept_emp as dm on e.emp_no = dm.emp_no "
+//                            + "inner join departments as dt on dm.dept_no = dt.dept_no "
+//                            + "WHERE e.emp_no = " + ID;
 //            // Execute SQL statement
 //            ResultSet rset = stmt.executeQuery(strSelect);
 //            // Return new employee if valid.
@@ -449,6 +466,72 @@ public class App {
         {
             System.out.println(e.getMessage());
             System.out.println("Failed to add employee");
+        }
+    }
+
+    // Get All Salaries Code # 2 to mark down
+
+    public ArrayList<Employee> getAllSalaries2() {
+        try {
+            // Create an SQL statement
+            Statement stmt = con.createStatement();
+            // Create string for SQL statement
+            String strSelect =
+                    "SELECT employees.emp_no, employees.first_name, employees.last_name, salaries.salary "
+                            + "FROM employees, salaries "
+                            + "WHERE employees.emp_no = salaries.emp_no AND salaries.to_date = '9999-01-01' "
+                            + "ORDER BY employees.emp_no ASC "
+                            + "LIMIT 20 ";
+            // Execute SQL statement
+            ResultSet rset = stmt.executeQuery(strSelect);
+            // Extract employee information
+            ArrayList<Employee> employees = new ArrayList<Employee>();
+            while (rset.next()) {
+                Employee emp = new Employee();
+                emp.emp_no = rset.getInt("employees.emp_no");
+                emp.first_name = rset.getString("employees.first_name");
+                emp.last_name = rset.getString("employees.last_name");
+                emp.salary = rset.getInt("salaries.salary");
+                employees.add(emp);
+            }
+            return employees;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Failed to get salary details");
+            return null;
+        }
+    }
+
+    /**
+     * Outputs to Markdown
+     *
+     * @param employees
+     */
+    public void outputEmployees(ArrayList<Employee> employees, String filename) {
+        // Check employees is not null
+        if (employees == null) {
+            System.out.println("No employees");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        // Print header
+        sb.append("| Emp No | First Name | Last Name |  Salary |\r\n");
+        sb.append("| --- | --- | --- | --- | \r\n");
+        // Loop over all employees in the list
+        for (Employee emp : employees) {
+            if (emp == null) continue;
+            sb.append("| " + emp.emp_no + " | " +
+                    emp.first_name + " | " + emp.last_name + " | " +
+                   + emp.salary + " | \r\n");
+        }
+        try {
+            new File("./reports/").mkdir();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new                                 File("./reports/" + filename)));
+            writer.write(sb.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
